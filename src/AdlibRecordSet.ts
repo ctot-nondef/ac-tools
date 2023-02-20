@@ -1,9 +1,18 @@
 import * as fs from "fs";
 import {IAdlibRecordSetInterface} from "./IAdlibRecordSet.interface";
 
+/**
+ *
+ */
 export class AdlibRecordSet implements IAdlibRecordSetInterface{
     public name;
     public set;
+
+    /**
+     * creates a new instance and sets the name passed
+     * to load a set please refer to loadSetFromFile
+     * @param name
+     */
     constructor(name: string) {
         this.name = name;
         this.set = [];
