@@ -1,6 +1,9 @@
 import * as fs from "fs";
+import {IAdlibRecordSetInterface} from "./IAdlibRecordSet.interface";
 
-export class AdlibRecordSet {
+export class AdlibRecordSet implements IAdlibRecordSetInterface{
+    public name;
+    public set;
     constructor(name: string) {
         this.name = name;
         this.set = [];
