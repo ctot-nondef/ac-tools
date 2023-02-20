@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import {IAdlibRecordSetInterface} from "./IAdlibRecordSet.interface";
+import {EAdlibFieldNamesEnum} from "./EAdlibFieldNames.enum"
 
 /**
  *
@@ -26,6 +27,11 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
         let data = fs.readFileSync(path, "utf-8");
         this.set = this.adlibDatToJson(data.replace(/^\uFEFF/, ""));
         return this.set.length;
+    }
+
+
+    public importFromCSV = (path: string): null|number => {
+
     }
 
     /**
@@ -68,7 +74,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
      * @param {[string]}fields an array of fieldname - strings to be serialized
      * @returns {string} a serialized adlibdat string
      */
-    public jsonToAdlibDat = (fields: string[]): string => {
+    public jsonToAdlibDat = (fields: EAdlibFieldNamesEnum[]): string => {
         let x = 0;
         return this.set.reduce((acc, val) => {
             let i = 0;
