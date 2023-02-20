@@ -47,7 +47,6 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
                 for(let y = 0; y <= l.length; y++) {
                     if(l[y]) {
                         let tag = l[y].substring(0, 2);
-                        console.log(tag, l[y], l[y].substring(0, 2))
                         if (tag !== '  ' && !tag.match(/\r/) ) {
                             if (!o[i][tag]) o[i][tag] = [];
                             o[i][tag].push(l[y].substring(3).replace(/[\r]+/g, ''));
@@ -96,7 +95,6 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
      * @returns {[]}
      */
     public recByField = (field: string, id: string, sel: string[]): Record<string, any> => {
-        console.log(this.set[0]);
         let res = this.set.filter((rec) => {
             return !!(Array.isArray(rec[field]) && rec[field].includes(id));
         });

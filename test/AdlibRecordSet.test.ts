@@ -17,7 +17,7 @@ describe ("AdlihRecordSet", () => {
                 const i = new AdlibRecordSet("testset");
                 i.loadSetFromFile("./test/data/testset.dat");
                 const o = i.jsonToAdlibDat(["TI"]);
-                expect(i.set.length).to.equal(453);
+                expect(i.set.length).to.equal(454);
                 expect(o).to.be.a("string");
             })
         })
