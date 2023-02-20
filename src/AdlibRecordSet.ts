@@ -43,15 +43,19 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
             if(source[i]) {
                 let l = source[i].split(/\n/);
                 o[i] = {};
-                let r = '';
+                let prevtag = '';
                 for(let y = 0; y <= l.length; y++) {
-                    if(l[y] && l[y].substring(0,2) !== '  ' && !l[y].substring(0,2).match(/\r/)) {
-                        if(!o[i][l[y].substring(0,2)]) o[i][l[y].substring(0,2)] = [];
-                        o[i][l[y].substring(0,2)].push(l[y].substring(3).replace(/[\r]+/g, ''));
-                        if(l[y+1].substring(0,2) == '  ') r = l[y].substring(0,2);
-                    }
-                    if(l[y] && l[y].substring(0,2) == '  ') {
-                        o[i][r][0] = o[i][r][0] + l[y].substring(3).replace(/[\r]+/g, '');
+                    if(l[y]) {
+                        let tag = l[y].substring(0, 2);
+                        console.log(tag, l[y], l[y].substring(0, 2))
+                        if (tag !== '  ' && !tag.match(/\r/) ) {
+                            if (!o[i][tag]) o[i][tag] = [];
+                            o[i][tag].push(l[y].substring(3).replace(/[\r]+/g, ''));
+                            prevtag = tag;
+                        }
+                        if (tag === '  ') {
+                            o[i][prevtag][0] = o[i][prevtag][0] + l[y].substring(3).replace(/[\r]+/g, '');
+                        }
                     }
                 }
             }
@@ -81,5 +85,28 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
             x++;
             return acc;
         }, '');
+    }
+
+    /**
+     * Filters the loaded set for a passed {id} in the defined {field}
+     * Returns the FIRST record matched
+     * @param {string} field
+     * @param {string} id
+     * @param {[string]} sel
+     * @returns {[]}
+     */
+    public recByField = (field: string, id: string, sel: string[]): Record<string, any> => {
+        console.log(this.set[0]);
+        let res = this.set.filter((rec) => {
+            return !!(Array.isArray(rec[field]) && rec[field].includes(id));
+        });
+        return res.map((rec) => {
+            let m = {};
+            sel.forEach((key) => {
+                if(rec[key]) m[key] = rec[key];
+                else m[key] = [];
+            })
+            return m;
+        })[0];
     }
 }
