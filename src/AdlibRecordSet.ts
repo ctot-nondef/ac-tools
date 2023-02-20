@@ -100,7 +100,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
      * @param {[string]} sel
      * @returns {[]}
      */
-    public recByField = (field: string, id: string, sel: string[]): Record<string, any> => {
+    public recByField = (field: EAdlibFieldNamesEnum, id: string, sel: EAdlibFieldNamesEnum[]): Record<string, any> => {
         let res = this.set.filter((rec) => {
             return !!(Array.isArray(rec[field]) && rec[field].includes(id));
         });
