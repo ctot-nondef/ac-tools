@@ -24,7 +24,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
      */
     public loadSetFromFile = (path: string): null|number => {
         let data = fs.readFileSync(path, "utf-8");
-        this.set = this.adlibDatToJson(data);
+        this.set = this.adlibDatToJson(data.replace(/^\uFEFF/, ""));
         return this.set.length;
     }
 
