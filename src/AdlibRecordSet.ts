@@ -73,7 +73,6 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
         return null;
     }
 
-
     /**
      * parses an adlib export into a filterable array of objects
      * WARNING: this does not preserve line breaks etc from RTF fields!
@@ -135,7 +134,6 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
      * @param {string} field
      * @param {string} id
      * @param {[string]} sel
-     * @returns {[]}
      */
     public recByField = (field: FieldCodesEnum, id: string, sel: FieldCodesEnum[]): Record<FieldCodesEnum, string[]> => {
         let res = this.set.filter((rec) => {

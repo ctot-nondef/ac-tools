@@ -25,6 +25,8 @@ describe ("AdlihRecordSet", () => {
             it("should parse the file into a json array", () => {
                 const i = new AdlibRecordSet("testset");
                 i.loadSetFromCSV("./test/data/testset.csv", null, ";");
+                expect(i.set.length).to.equal(8);
+                expect(i.recByField("IN", "AT-OeAI-02-000298",["OB"])["OB"][0]).to.equal("Rohton-Probe")
             })
         })
     })
