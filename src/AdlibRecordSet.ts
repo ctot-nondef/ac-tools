@@ -32,7 +32,14 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
         return this.set.length;
     }
 
-
+    /**
+     * loads and parses a csv file from the specified path, if passed an array of field codes, they are used as column headings
+     * if null is passed in fields, the contents of the first row are assumed to be headings, these can be either field names or
+     * two letter field codes, a delimiter must be passed, there is no default
+     * @param path
+     * @param fields
+     * @param delimiter
+     */
     public loadSetFromCSV = (path: string, fields: FieldCodesEnum[] | null, delimiter: string): null|number => {
         const data = parse(fs.readFileSync(path, "utf-8"), {
             delimiter: delimiter,
@@ -51,10 +58,14 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
                 }
             })
         }
-        console.log(o);
+        this.set.push(...o)
         return data.length;
     }
 
+    /**\
+     * returns the two letter axiell field code when passed the fields name
+     * @param name
+     */
     public fieldCodeByName = (name: string): FieldCodesEnum|null => {
         const FieldNames = Object.values(EAdlibFieldNamesEnum);
         // @ts-ignore
