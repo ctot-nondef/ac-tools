@@ -13,12 +13,18 @@ describe ("AdlihRecordSet", () => {
     })
     describe("loading and writing a set", () => {
         context("when a proper path to a tagged adlib file is passed", () => {
-            it("should parsed the file into a json array", () => {
+            it("should parse the file into a json array", () => {
                 const i = new AdlibRecordSet("testset");
                 i.loadSetFromFile("./test/data/testset.dat");
                 const o = i.jsonToAdlibDat(["TI"]);
                 expect(i.set.length).to.equal(454);
                 expect(o).to.be.a("string");
+            })
+        })
+        context("when a proper path to a csv file is passed", () => {
+            it("should parse the file into a json array", () => {
+                const i = new AdlibRecordSet("testset");
+                i.loadSetFromCSV("./test/data/testset.csv", null, ";");
             })
         })
     })

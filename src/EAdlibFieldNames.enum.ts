@@ -641,3 +641,5 @@ export enum EAdlibFieldNamesEnum {
     "1l" = "part_of_reference.lref",
     "%0" = "priref",
 }
+
+export type FieldCodesEnum = keyof typeof EAdlibFieldNamesEnum;

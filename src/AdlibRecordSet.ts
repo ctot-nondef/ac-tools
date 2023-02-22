@@ -1,6 +1,8 @@
 import * as fs from "fs";
+import { parse } from "csv-parse/sync"
+
 import {IAdlibRecordSetInterface} from "./IAdlibRecordSet.interface";
-import {EAdlibFieldNamesEnum} from "./EAdlibFieldNames.enum"
+import {EAdlibFieldNamesEnum, FieldCodesEnum} from "./EAdlibFieldNames.enum"
 
 /**
  *
@@ -8,6 +10,7 @@ import {EAdlibFieldNamesEnum} from "./EAdlibFieldNames.enum"
 export class AdlibRecordSet implements IAdlibRecordSetInterface{
     public name;
     public set;
+    public srcUrl;
 
     /**
      * creates a new instance and sets the name passed
@@ -20,7 +23,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
     }
 
     /**
-     * loads a file from given path and attempts to parse it as an adlib tagged file
+     * loads a file from the given path and attempts to parse it as an adlib tagged file
      * @param path
      */
     public loadSetFromFile = (path: string): null|number => {
@@ -30,9 +33,35 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
     }
 
 
-    public importFromCSV = (path: string): null|number => {
-
+    public loadSetFromCSV = (path: string, fields: FieldCodesEnum[] | null, delimiter: string): null|number => {
+        const data = parse(fs.readFileSync(path, "utf-8"), {
+            delimiter: delimiter,
+            columns: fields ? fields:true,
+        });
+        const o = [];
+        for(let i = data.length-1; i >= 0; i--) {
+            o[i] = {};
+            Object.keys(data[i]).forEach((k) => {
+                let key = null;
+                if(EAdlibFieldNamesEnum[k]) key = k;
+                else if(this.fieldCodeByName(k)) key = this.fieldCodeByName(k);
+                if (key) {
+                    if(!o[i][key]) o[i][key] = [];
+                    o[i][key].push(data[i][k])
+                }
+            })
+        }
+        console.log(o);
+        return data.length;
     }
+
+    public fieldCodeByName = (name: string): FieldCodesEnum|null => {
+        const FieldNames = Object.values(EAdlibFieldNamesEnum);
+        // @ts-ignore
+        if(FieldNames.includes(name)) return Object.keys(EAdlibFieldNamesEnum).find(key => EAdlibFieldNamesEnum[key] === name);
+        return null;
+    }
+
 
     /**
      * parses an adlib export into a filterable array of objects
@@ -40,27 +69,25 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
      * @param {string}d an adlibdat string
      * @returns {[]} an array of objects
      */
-    private adlibDatToJson = (d: string): Record<string, any>[] => {
+    public adlibDatToJson = (d: string): Record<FieldCodesEnum, string[]>[] => {
         let source = d.split('**');
         console.log(`parsing ${source.length} records`);
         let o = [];
-        for(let i = source.length; i >= 0; i--) {
+        for(let i = source.length-1; i >= 0; i--) {
             console.log(`parsing record ${i} of ${source.length}`);
-            if(source[i]) {
-                let l = source[i].split(/\n/);
-                o[i] = {};
-                let prevtag = '';
-                for(let y = 0; y <= l.length; y++) {
-                    if(l[y]) {
-                        let tag = l[y].substring(0, 2);
-                        if (tag !== '  ' && !tag.match(/\r/) ) {
-                            if (!o[i][tag]) o[i][tag] = [];
-                            o[i][tag].push(l[y].substring(3).replace(/[\r]+/g, ''));
-                            prevtag = tag;
-                        }
-                        if (tag === '  ') {
-                            o[i][prevtag][0] = o[i][prevtag][0] + l[y].substring(3).replace(/[\r]+/g, '');
-                        }
+            let l = source[i].split(/\n/);
+            o[i] = {};
+            let prevtag = '';
+            for(let y = 0; y <= l.length; y++) {
+                if(l[y]) {
+                    let tag = l[y].substring(0, 2);
+                    if (tag !== '  ' && !tag.match(/\r/) ) {
+                        if (!o[i][tag]) o[i][tag] = [];
+                        o[i][tag].push(l[y].substring(3).replace(/[\r]+/g, ''));
+                        prevtag = tag;
+                    }
+                    if (tag === '  ') {
+                        o[i][prevtag][0] = o[i][prevtag][0] + l[y].substring(3).replace(/[\r]+/g, '');
                     }
                 }
             }
@@ -69,12 +96,11 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
     }
 
     /**
-     * serialises a specified selection of fields from an array of adlibdat
-     * objects into an importable adlibdat string
+     * serialises a specified selection of fields from the currently loaded set into an importable adlibdat string
      * @param {[string]}fields an array of fieldname - strings to be serialized
      * @returns {string} a serialized adlibdat string
      */
-    public jsonToAdlibDat = (fields: EAdlibFieldNamesEnum[]): string => {
+    public jsonToAdlibDat = (fields: FieldCodesEnum[]): string => {
         let x = 0;
         return this.set.reduce((acc, val) => {
             let i = 0;
@@ -100,7 +126,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
      * @param {[string]} sel
      * @returns {[]}
      */
-    public recByField = (field: EAdlibFieldNamesEnum, id: string, sel: EAdlibFieldNamesEnum[]): Record<string, any> => {
+    public recByField = (field: FieldCodesEnum, id: string, sel: FieldCodesEnum[]): Record<string, any> => {
         let res = this.set.filter((rec) => {
             return !!(Array.isArray(rec[field]) && rec[field].includes(id));
         });
