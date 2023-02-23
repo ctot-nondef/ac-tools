@@ -3,14 +3,15 @@ import { parse } from "csv-parse/sync"
 
 import {IAdlibRecordSetInterface} from "./IAdlibRecordSet.interface";
 import {EAdlibFieldNamesEnum, FieldCodesEnum} from "./EAdlibFieldNames.enum"
+import { TAdlibRecordType } from "./TAdlibRecord.type";
 
 /**
  *
  */
 export class AdlibRecordSet implements IAdlibRecordSetInterface{
     public name;
-    public set;
-    public srcUrl;
+    public set: TAdlibRecordType[];
+    public srcUrl: URL | undefined;
 
     /**
      * creates a new instance and sets the name passed
@@ -20,6 +21,14 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
     constructor(name: string) {
         this.name = name;
         this.set = [];
+    }
+
+    /**
+     * sets the source URL of an Adlib instance from wich the current set is loaded
+     * @param url
+     */
+    public setSrcUrl = (url: URL): void => {
+        this.srcUrl = url;
     }
 
     /**
@@ -45,11 +54,12 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
             delimiter: delimiter,
             columns: fields ? fields:true,
         });
-        const o = [];
+        const o: Array<any> = [];
         for(let i = data.length-1; i >= 0; i--) {
             o[i] = {};
             Object.keys(data[i]).forEach((k) => {
                 let key = null;
+                // @ts-ignore
                 if(EAdlibFieldNamesEnum[k]) key = k;
                 else if(this.fieldCodeByName(k)) key = this.fieldCodeByName(k);
                 if (key) {
@@ -79,10 +89,10 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
      * @param {string}d an adlibdat string
      * @returns {[]} an array of objects
      */
-    public adlibDatToJson = (d: string): Record<FieldCodesEnum, string[]>[] => {
+    public adlibDatToJson = (d: string): TAdlibRecordType[] => {
         let source = d.split('**');
         console.log(`parsing ${source.length} records`);
-        let o = [];
+        let o: TAdlibRecordType[] = [];
         for(let i = source.length-1; i >= 0; i--) {
             console.log(`parsing record ${i} of ${source.length}`);
             let l = source[i].split(/\n/);
@@ -90,18 +100,24 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
             let prevtag = '';
             for(let y = 0; y <= l.length; y++) {
                 if(l[y]) {
-                    let tag = l[y].substring(0, 2);
+                    // @ts-ignore
+                    let tag: FieldCodesEnum = l[y].substring(0, 2);
+                    // @ts-ignore
                     if (tag !== '  ' && !tag.match(/\r/) ) {
+                        // @ts-ignore
                         if (!o[i][tag]) o[i][tag] = [];
+                        // @ts-ignore
                         o[i][tag].push(l[y].substring(3).replace(/[\r]+/g, ''));
                         prevtag = tag;
                     }
+                    // @ts-ignore
                     if (tag === '  ') {
+                        // @ts-ignore
                         o[i][prevtag][0] = o[i][prevtag][0] + l[y].substring(3).replace(/[\r]+/g, '');
                     }
                 }
             }
-        }
+         }
         return o;
     }
 
@@ -116,6 +132,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
             let i = 0;
             fields.forEach((f) => {
                 if(Array.isArray(val[f])) {
+                    // @ts-ignore
                     val[f].forEach((y) => {
                         acc += `${f} ${y}\n`
                     })
@@ -135,12 +152,13 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface{
      * @param {string} id
      * @param {[string]} sel
      */
-    public recByField = (field: FieldCodesEnum, id: string, sel: FieldCodesEnum[]): Record<FieldCodesEnum, string[]> => {
+    public recByField = (field: FieldCodesEnum, id: string, sel: FieldCodesEnum[]): TAdlibRecordType => {
         let res = this.set.filter((rec) => {
+            // @ts-ignore
             return !!(Array.isArray(rec[field]) && rec[field].includes(id));
         });
         return res.map((rec) => {
-            let m = {};
+            let m: TAdlibRecordType = {};
             sel.forEach((key) => {
                 if(rec[key]) m[key] = rec[key];
                 else m[key] = [];

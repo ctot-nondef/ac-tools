@@ -1,7 +1,7 @@
-import { FieldCodesEnum } from "./EAdlibFieldNames.enum";
+import { TAdlibRecordType } from "./TAdlibRecord.type";
 
 export interface IAdlibRecordSetInterface extends Record<string, any> {
     name: string;
-    srcUrl: URL;
-    set: Record<FieldCodesEnum, string[]>[];
+    srcUrl: URL | undefined;
+    set: TAdlibRecordType[];
 }

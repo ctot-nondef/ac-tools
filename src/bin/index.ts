@@ -4,7 +4,9 @@ import {Command} from "commander";
 
 const program = new Command();
 
-import {instance as main} from "../index";
+import AdlibRecordSet from "../index";
+
+
 
 async function run() {
     program
@@ -16,7 +18,6 @@ async function run() {
         .argument("<configpath>", "Location of the configuration")
         .argument("<setname>", "Name of the query set")
         .action(async (configpath: string, set: string) => {
-            console.log(await main.fetch(set, configpath));
         });
 
     program.parse();
