@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "outDir": "./build",
-    "rootDir": "./",
+    "outDir": "./lib",
+    "rootDir": "./src",
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -14,6 +14,6 @@
     "sourceMap": true
   },
   "include": [
-    "src/**/*"
+    "src/index.ts"
   ]
 }
