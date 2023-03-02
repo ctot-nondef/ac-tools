@@ -10,7 +10,8 @@
     "object-literal-sort-keys": [false],
     "member-ordering": [false],
     "max-line-length": [false],
-    "no-empty-interface": [false]
+    "no-empty-interface": [false],
+    "indent": [true, "tabs", 2]
   },
   "rulesDirectory": []
 }

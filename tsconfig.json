@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "outDir": "./lib",
-    "rootDir": "./src",
+    "rootDir": "./",
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
