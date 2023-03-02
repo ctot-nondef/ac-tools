@@ -27,6 +27,7 @@ describe("AdlihRecordSet", () => {
 				i.loadSetFromCSV("./test/data/testset.csv", null, ";");
 				expect(i.set.length).to.equal(8);
 				expect(i.recByField("IN", "AT-OeAI-02-000298", ["OB"]).OB[0]).to.equal("Rohton-Probe");
+				expect(i.recByField("IN", "AT-OeAI-02-000298", ["nt"]).nt[3]).to.equal("AT-OeAI-02-000124");
 			});
 		});
 	});

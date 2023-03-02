@@ -57,6 +57,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 		const data = parse(fs.readFileSync(path, "utf-8"), {
 			delimiter,
 			columns: fields ? fields : true,
+			group_columns_by_name: true,
 		});
 		const o: any[] = [];
 		for (let i = data.length - 1; i >= 0; i--) {
@@ -73,7 +74,12 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 					if (!o[i][key]) {
 						o[i][key] = [];
 					}
-					o[i][key].push(data[i][k]);
+					if(Array.isArray(data[i][k])) {
+						o[i][key].push(...data[i][k])
+					}
+					else {
+						o[i][key].push(data[i][k]);
+					}
 				}
 			});
 		}
