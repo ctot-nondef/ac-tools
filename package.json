@@ -2,7 +2,7 @@
   "name": "ac-tools",
   "description": "some tools to manage and edit axiell collectionsdata",
   "version": "0.0.1b",
-  "main": "dist/index.js",
+  "main": "lib/src/index.js",
   "scripts": {
     "build": "tsc",
     "test": "nyc --reporter=lcov mocha --exit --require ts-node/register test/*.ts",
