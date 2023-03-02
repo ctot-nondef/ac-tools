@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "test": "nyc --reporter=json-summary mocha --exit --require ts-node/register test/*.ts",
+    "test": "nyc --reporter=lcov mocha --exit --require ts-node/register test/*.ts",
     "lint": "tslint '{src,test}/**/*.ts' --fix",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\""
   },
