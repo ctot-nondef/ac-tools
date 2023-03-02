@@ -19,8 +19,7 @@ jobs:
           file: ./coverage/lcov.info
           fail_ci_if_error: true
           verbose: true
-      - name: "Build to lib"
-        run: npm build
+      - run: npm build
       - name: "Publish to NPM"
         uses: JS-DevTools/npm-publish@v1
         with:
