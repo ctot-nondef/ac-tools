@@ -82,7 +82,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 				}
 			});
 		}
-		this.set.push(...o);
+		this.set.push(...o.filter((rec: any) => Object.keys(rec).length !== 0));
 		return data.length;
 	};
 
