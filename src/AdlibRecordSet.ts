@@ -74,10 +74,9 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 					if (!o[i][key]) {
 						o[i][key] = [];
 					}
-					if(Array.isArray(data[i][k])) {
-						o[i][key].push(...data[i][k].filter((str: string) => str !== ""))
-					}
-					else if (data[i][k] !== ""){
+					if (Array.isArray(data[i][k])) {
+						o[i][key].push(...data[i][k].filter((str: string) => str !== ""));
+					} else if (data[i][k] !== "") {
 						o[i][key].push(data[i][k]);
 					}
 				}
