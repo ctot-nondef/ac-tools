@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/ctot-nondef/ac-tools/branch/master/graph/badge.svg?token=SY1X0ZURBY)](https://codecov.io/gh/ctot-nondef/ac-tools)
+
 # Axiell Data Tools
 
 This small library was built to parse and modify [Adlib tagged](https://documentation.axiell.com/alm/en/ds_eiefadlibtagged.html) files for
