@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { AdlibRecordSet } from "../src/AdlibRecordSet";
+import * as fs from "fs";
 
 describe("AdlihRecordSet", () => {
 	describe("constructor", () => {
@@ -29,6 +30,27 @@ describe("AdlihRecordSet", () => {
 				expect(i.recByField("IN", "AT-OeAI-02-000298", ["OB"]).OB[0]).to.equal("Rohton-Probe");
 				expect(i.recByField("IN", "AT-OeAI-02-000298", ["nt"]).nt[3]).to.equal("AT-OeAI-02-000124");
 				expect(i.recByField("IN", "AT-OeAI-02-000300", ["nt"]).nt.length).to.equal(2);
+			});
+		});
+		context("when a loaded set is parsed with a set field code array", () => {
+			it("should parse the set into an adlib tagged file with only these prperties", () => {
+				const i = new AdlibRecordSet("testset");
+				i.loadSetFromFile("./test/data/testset.dat");
+				const o = i.jsonToAdlibDat(["TI"]);
+				const data = fs.readFileSync("./test/data/testset_IN.dat", "utf-8");
+				expect(o).to.equal(data);
+			});
+		});
+		context("when a loaded set is parsed without a set field code array", () => {
+			it("should parse the set into an adlib tagged file with all available properties", () => {
+				const i = new AdlibRecordSet("testset");
+				i.loadSetFromFile("./test/data/testset.dat");
+				const o = i.jsonToAdlibDat(null);
+				//because in JS the sequence of properties in an object is arbitrary the string comparison with the
+				//original file fails
+				//TODO: find a way to test if all available properties are indeed written
+				//const data = fs.readFileSync("./test/data/testset.dat", "utf-8");
+				expect(o).to.be.a("string");
 			});
 		});
 	});

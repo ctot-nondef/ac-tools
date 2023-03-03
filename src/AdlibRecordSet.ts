@@ -145,11 +145,18 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 	 * @param {[string]}fields an array of fieldname - strings to be serialized
 	 * @returns {string} a serialized adlibdat string
 	 */
-	public jsonToAdlibDat = (fields: FieldCodesEnum[]): string => {
+	public jsonToAdlibDat = (fields: FieldCodesEnum[]|null): string => {
 		let x = 0;
 		return this.set.reduce((acc, val) => {
 			let i = 0;
-			fields.forEach((f) => {
+			let ifields;
+			if(Array.isArray(fields)) {
+				ifields = fields;
+			} else {
+				ifields = Object.keys(EAdlibFieldNamesEnum);
+			}
+			ifields.forEach((f) => {
+				// @ts-ignore
 				if (Array.isArray(val[f])) {
 					// @ts-ignore
 					val[f].forEach((y) => {
