@@ -1,4 +1,4 @@
-[![codecov](https://codecov.io/gh/ctot-nondef/ac-tools/branch/master/graph/badge.svg?token=SY1X0ZURBY)](https://codecov.io/gh/ctot-nondef/ac-tools)
+![Test & Deploy](https://github.com/ctot-nondef/ac-tools/actions/workflows/testandpublish.yml/badge.svg) [![codecov](https://codecov.io/gh/ctot-nondef/ac-tools/branch/master/graph/badge.svg?token=SY1X0ZURBY)](https://codecov.io/gh/ctot-nondef/ac-tools) [![npm version](https://badge.fury.io/js/@nondef%2Fac-tools.svg)](https://badge.fury.io/js/@nondef%2Fac-tools)
 
 # Axiell Data Tools
 
