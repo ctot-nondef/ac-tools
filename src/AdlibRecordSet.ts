@@ -7,6 +7,7 @@ import { TAdlibRecordType } from "./TAdlibRecord.type";
 
 /**
  *
+ * @implements IAdlibRecordSetInterface
  */
 export class AdlibRecordSet implements IAdlibRecordSetInterface {
 	public name;

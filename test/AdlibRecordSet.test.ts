@@ -64,4 +64,14 @@ describe("AdlihRecordSet", () => {
 			});
 		});
 	});
+	describe("checking file references and URLs", () => {
+		context("when a file reference points to an existing file", () => {
+			it("should return true", () => {
+				const i = new AdlibRecordSet("testset");
+				i.loadSetFromFile("./test/data/testset.dat");
+				const r = i.recByField("TI", "GL1083_09_01", ["TI", "IN"]);
+				expect(r.IN[0]).to.equal("AT-OeAW-BA-3-27-A-GL1083_09_01");
+			});
+		});
+	});
 });
