@@ -8,8 +8,28 @@ import into Axiell applications through the [Axiell Designer](http://documentati
 It is provided as is, and in no way endorsed or maintained by Axiell ALM
 
 # Usage
+Sample workflow to import a folder of CSVs and render them as a tagged Adlib file. 
+```javascript
+const actools = require("@nondef/ac-tools")
+const fs = require('fs');
+
+const dataFolder = './datain/';
+const import_set = new actools.AdlibRecordSet("importset")
+
+fs.readdirSync(dataFolder).forEach(file => {
+    //loads the CSV as a set using the first row for column heading
+    import_set.loadSetFromCSV(`${dataFolder}${file}`, null, ";");
+});
+
+import_set.set.forEach((rec) => {
+  //some record manipulations
+})
 
 
+fs.writeFileSync("./dataout/importset.dat", import_set.jsonToAdlibDat(["IN", "bt"]))
+```
+
+For details see the [documentation](https://ctot-nondef.github.io/ac-tools/index.html)
 
 
 # Building
@@ -17,4 +37,5 @@ It is provided as is, and in no way endorsed or maintained by Axiell ALM
 ```bash
 npm install     # Installs dependencies for building the project
 npm build     # builds to ./lib
+npm doccument # builds the documentation to /docs
 ```
