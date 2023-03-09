@@ -17,7 +17,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 	/**
 	 * creates a new instance and sets the name passed
 	 * to load a set please refer to loadSetFromFile
-	 * @param name
+	 * @param name a designated name for the set
 	 */
 	constructor(name: string) {
 		this.name = name;
@@ -26,7 +26,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 
 	/**
 	 * sets the source URL of an Adlib instance from wich the current set is loaded
-	 * @param url
+	 * @param url a valid adlib OPAC url to import from
 	 */
 	public setSrcUrl = (url: URL): void => {
 		this.srcUrl = url;
@@ -34,7 +34,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 
 	/**
 	 * loads a file from the given path and attempts to parse it as an adlib tagged file
-	 * @param path
+	 * @param {string}path a path to an Adlib tagged file
 	 */
 	public loadSetFromFile = (path: string): null | number => {
 		const data = fs.readFileSync(path, "utf-8");
@@ -46,9 +46,10 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 	 * loads and parses a csv file from the specified path, if passed an array of field codes, they are used as column headings
 	 * if null is passed in fields, the contents of the first row are assumed to be headings, these can be either field names or
 	 * two letter field codes, a delimiter must be passed, there is no default
-	 * @param path
-	 * @param fields
-	 * @param delimiter
+	 * @param {string}path the path to the csv file to be imported
+	 * @param {FieldCodesEnum[]|null}fields an array of field codes
+	 * @param {string}delimiter the delimiter for the CSV
+	 * @returns {number | null}
 	 */
 	public loadSetFromCSV = (
 		path: string,
@@ -87,9 +88,10 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 		return data.length;
 	};
 
-	/**\
+	/**
 	 * returns the two letter axiell field code when passed the fields name
-	 * @param name
+	 * @param {string}name the field name to be translated
+	 * @returns {FieldCodesEnum|null} An Adlib field code or null
 	 */
 	public fieldCodeByName = (name: string): FieldCodesEnum | null => {
 		const FieldNames = Object.values(EAdlibFieldNamesEnum);
@@ -142,8 +144,9 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 	};
 
 	/**
-	 * serialises a specified selection of fields from the currently loaded set into an importable adlibdat string
-	 * @param {[string]}fields an array of fieldname - strings to be serialized
+	 * Serialises a specified selection of fields from the currently loaded set into an importable adlibdat string.
+	 * If null is passed instead of an array of fieldcodes all available fields are rendered.
+	 * @param {[string]|null}fields an array of fieldcodes to be serialized or null
 	 * @returns {string} a serialized adlibdat string
 	 */
 	public jsonToAdlibDat = (fields: FieldCodesEnum[]|null): string => {
@@ -177,9 +180,10 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 	/**
 	 * Filters the loaded set for a passed {id} in the defined {field}
 	 * Returns the FIRST record matched
-	 * @param {string} field
-	 * @param {string} id
-	 * @param {[string]} sel
+	 * @param {string}field the fieldcode in which the identifier is sought
+	 * @param {string} id the identifier
+	 * @param {[string]} sel a list of field codes to be included in the output record
+	 * @returns a JSON representation of an Adlib record
 	 */
 	public recByField = (
 		field: FieldCodesEnum,
