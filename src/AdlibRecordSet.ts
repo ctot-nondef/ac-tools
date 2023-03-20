@@ -248,7 +248,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 					try {
 						res = await axios.head(link);
 						resultarray.push({ link, status: res.status })
-					} catch (err) {
+					} catch (err: any) {
 						resultarray.push({ link, status: err.message })
 					}
 				}
