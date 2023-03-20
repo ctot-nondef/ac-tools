@@ -206,7 +206,14 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 			return m;
 		})[0];
 	};
-	
+
+	/**
+	 * Runs through all records of the loaded set, retrieving paths in the defined
+	 * {field} (usually FN) and checks if the referenced files are present in {baseDir}
+	 * @param {FieldCodesEnum}field the field code to retrieve the paths from, usually FN
+	 * @param {string}baseDir the base bath of your assets directory
+	 * @returns An array of Objects
+	 */
 	public checkFiles = (
 		field: FieldCodesEnum,
 		baseDir: string,
