@@ -213,7 +213,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 	 * {field} (usually FN) and checks if the referenced files are present in {baseDir}
 	 * @param {FieldCodesEnum}field the field code to retrieve the paths from, usually FN
 	 * @param {string}baseDir the base bath of your assets directory
-	 * @returns An array of Objects
+	 * @returns An array of objects
 	 */
 	public checkFiles = (
 		field: FieldCodesEnum,
@@ -229,6 +229,12 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 		return resultarray;
 	}
 
+	/**
+	 * Runs through all records of a loaded set, retrieving the links in the defined
+	 * {field} (usually RT) and checks if the adress is reachable.
+	 * @param {FieldCodesEnum}field the field code to retrieve the links from, usually RT
+	 * @returns An array of objects
+	 */
 	public checkLinks = async ( field: FieldCodesEnum ): Promise<Record<any, any>[]> => {
 		const resultarray: Record<any, any>[] = [];
 		for(let i = 0; i <= this.set.length-1; i++) {
