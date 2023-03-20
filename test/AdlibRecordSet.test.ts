@@ -12,6 +12,14 @@ describe("AdlihRecordSet", () => {
 			});
 		});
 	});
+	describe("retrieving Field Codes by name", () => {
+		context("when an invalid Field code is provided", () => {
+			it("should return null", () => {
+				const i = new AdlibRecordSet("testset");
+				expect(i.fieldCodeByName("00")).to.equal(null);
+			});
+		});
+	});
 	describe("loading and writing a set", () => {
 		context("when a proper path to a tagged adlib file is passed", () => {
 			it("should parse the file into a json array", () => {
@@ -59,7 +67,7 @@ describe("AdlihRecordSet", () => {
 			it("should return the requested record", () => {
 				const i = new AdlibRecordSet("testset");
 				i.loadSetFromFile("./test/data/testset.dat");
-				const r = i.recByField("TI", "GL1083_09_01", ["TI", "IN"]);
+				const r = i.recByField("TI", "GL1083_09_01", ["TI", "IN", "nt"]);
 				expect(r.IN[0]).to.equal("AT-OeAW-BA-3-27-A-GL1083_09_01");
 			});
 		});

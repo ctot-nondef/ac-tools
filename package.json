@@ -1,7 +1,7 @@
 {
   "name": "@nondef/ac-tools",
   "description": "some tools to manage and edit axiell collectionsdata",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "lib/src/index.js",
   "scripts": {
     "build": "tsc",
