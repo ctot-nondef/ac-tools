@@ -206,4 +206,18 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 			return m;
 		})[0];
 	};
+	
+	public checkFiles = (
+		field: FieldCodesEnum,
+		baseDir: string,
+	): Record<any, any>[] => {
+		const resultarray: Record<any, any>[] = [];
+		this.set.forEach((rec) => {
+			if(Array.isArray(rec[field])) rec[field]?.forEach((path) => {
+				if(fs.existsSync(`${baseDir}${path}`)) resultarray.push({path, status: "OK"});
+				else resultarray.push({ path, status: "FAIL"});
+			})
+		})
+		return resultarray;
+	}
 }

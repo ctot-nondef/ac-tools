@@ -13,6 +13,7 @@ DA 1 sheet
 BA Österreichische Akademie der Wissenschaften, BAS:IS
 F2 no restrictions
 bt AT-OeAW-BA-3-27-A
+FN test/data/testset.csv
 **
 TI GL1083_09_02
 IN AT-OeAW-BA-3-27-A-GL1083_09_02
@@ -27,6 +28,7 @@ DA 1 sheet
 BA Österreichische Akademie der Wissenschaften, BAS:IS
 F2 no restrictions
 bt AT-OeAW-BA-3-27-A
+FN test/data/blabla.csv
 **
 TI GL1083_10
 IN AT-OeAW-BA-3-27-A-GL1083_10
