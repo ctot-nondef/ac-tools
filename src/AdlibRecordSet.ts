@@ -31,7 +31,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 	 */
 	public setSrcUrl = (url: URL): void => {
 		this.srcUrl = url;
-	};
+	}
 
 	/**
 	 * loads a file from the given path and attempts to parse it as an adlib tagged file
@@ -41,7 +41,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 		const data = fs.readFileSync(path, "utf-8");
 		this.set = this.adlibDatToJson(data.replace(/^\uFEFF/, ""));
 		return this.set.length;
-	};
+	}
 
 	/**
 	 * loads and parses a csv file from the specified path, if passed an array of field codes, they are used as column headings
@@ -87,7 +87,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 		}
 		this.set.push(...o.filter((rec: any) => Object.keys(rec).length !== 0));
 		return data.length;
-	};
+	}
 
 	/**
 	 * returns the two letter axiell field code when passed the fields name
@@ -102,7 +102,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 			return Object.keys(EAdlibFieldNamesEnum).find((key) => EAdlibFieldNamesEnum[key] === name);
 		}
 		return null;
-	};
+	}
 
 	/**
 	 * parses an adlib export into a filterable array of objects
@@ -142,7 +142,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 			}
 		}
 		return o;
-	};
+	}
 
 	/**
 	 * Serialises a specified selection of fields from the currently loaded set into an importable adlibdat string.
@@ -155,7 +155,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 		return this.set.reduce((acc, val) => {
 			let i = 0;
 			let ifields;
-			if(Array.isArray(fields)) {
+			if (Array.isArray(fields)) {
 				ifields = fields;
 			} else {
 				ifields = Object.keys(EAdlibFieldNamesEnum);
@@ -176,7 +176,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 			x++;
 			return acc;
 		}, "");
-	};
+	}
 
 	/**
 	 * Filters the loaded set for a passed {id} in the defined {field}
@@ -206,7 +206,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 			});
 			return m;
 		})[0];
-	};
+	}
 
 	/**
 	 * Runs through all records of the loaded set, retrieving paths in the defined
@@ -218,14 +218,16 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 	public checkFiles = (
 		field: FieldCodesEnum,
 		baseDir: string,
-	): Record<any, any>[] => {
-		const resultarray: Record<any, any>[] = [];
+	): Array<Record<any, any>> => {
+		const resultarray: Array<Record<any, any>> = [];
 		this.set.forEach((rec) => {
-			if(Array.isArray(rec[field])) rec[field]?.forEach((path) => {
-				if(fs.existsSync(`${baseDir}${path}`)) resultarray.push({path, status: "OK"});
-				else resultarray.push({ path, status: "FAIL"});
-			})
-		})
+			if (Array.isArray(rec[field])) { // @ts-ignore
+				rec[field].forEach((path) => {
+								if (fs.existsSync(`${baseDir}${path}`)) { resultarray.push({path, status: "OK"}); }
+								else { resultarray.push({ path, status: "FAIL"}); }
+							});
+			}
+		});
 		return resultarray;
 	}
 
@@ -235,21 +237,21 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 	 * @param {FieldCodesEnum}field the field code to retrieve the links from, usually RT
 	 * @returns An array of objects
 	 */
-	public checkLinks = async ( field: FieldCodesEnum ): Promise<Record<any, any>[]> => {
-		const resultarray: Record<any, any>[] = [];
-		for(let i = 0; i <= this.set.length-1; i++) {
-			let rec = this.set[i];
+	public checkLinks = async ( field: FieldCodesEnum ): Promise<Array<Record<any, any>>> => {
+		const resultarray: Array<Record<any, any>> = [];
+		for (let i = 0; i <= this.set.length - 1; i++) {
+			const rec = this.set[i];
 			let res: any;
-			if(rec[field] && Array.isArray(rec[field])) {
+			if (rec[field] && Array.isArray(rec[field])) {
 				// @ts-ignore
-				for (let y = 0; y <= rec[field].length-1; y++) {
+				for (let y = 0; y <= rec[field].length - 1; y++) {
 					// @ts-ignore
-					let link = rec[field][y]
+					const link = rec[field][y];
 					try {
 						res = await axios.head(link);
-						resultarray.push({ link, status: res.status })
+						resultarray.push({ link, status: res.status });
 					} catch (err: any) {
-						resultarray.push({ link, status: err.message })
+						resultarray.push({ link, status: err.message });
 					}
 				}
 			}

@@ -54,10 +54,10 @@ describe("AdlihRecordSet", () => {
 				const i = new AdlibRecordSet("testset");
 				i.loadSetFromFile("./test/data/testset.dat");
 				const o = i.jsonToAdlibDat(null);
-				//because in JS the sequence of properties in an object is arbitrary the string comparison with the
-				//original file fails
-				//TODO: find a way to test if all available properties are indeed written
-				//const data = fs.readFileSync("./test/data/testset.dat", "utf-8");
+				// because in JS the sequence of properties in an object is arbitrary the string comparison with the
+				// original file fails
+				// TODO: find a way to test if all available properties are indeed written
+				// const data = fs.readFileSync("./test/data/testset.dat", "utf-8");
 				expect(o).to.be.a("string");
 			});
 		});
@@ -95,9 +95,8 @@ describe("AdlihRecordSet", () => {
 				i.loadSetFromFile("./test/data/testset.dat");
 				const checkres = await i.checkLinks("RF");
 				expect(checkres[0].status).to.equal(200);
-				expect(checkres[1].status).to.equal('getaddrinfo ENOTFOUND this-is-a-fake-url.com');
+				expect(checkres[1].status).to.equal("getaddrinfo ENOTFOUND this-is-a-fake-url.com");
 			}).timeout(20000);
 		});
 	});
 });
-
