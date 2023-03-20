@@ -81,6 +81,15 @@ describe("AdlihRecordSet", () => {
 				expect(checkres[1].status).to.equal("FAIL");
 			});
 		});
+		context("when a link is valid", () => {
+			it("should return OK", async () => {
+				const i = new AdlibRecordSet("testset");
+				i.loadSetFromFile("./test/data/testset.dat");
+				const checkres = await i.checkLinks("RF");
+				expect(checkres[0].status).to.equal(200);
+				expect(checkres[1].status).to.equal('getaddrinfo ENOTFOUND this-is-a-fake-url.com');
+			}).timeout(10000);
+		});
 	});
 });
 

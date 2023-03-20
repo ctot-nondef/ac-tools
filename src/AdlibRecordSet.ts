@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import { parse } from "csv-parse/sync";
+import axios from "axios";
 
 import { IAdlibRecordSetInterface } from "./IAdlibRecordSet.interface";
 import { EAdlibFieldNamesEnum, FieldCodesEnum } from "./EAdlibFieldNames.enum";
@@ -225,6 +226,28 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 				else resultarray.push({ path, status: "FAIL"});
 			})
 		})
+		return resultarray;
+	}
+
+	public checkLinks = async ( field: FieldCodesEnum ): Promise<Record<any, any>[]> => {
+		const resultarray: Record<any, any>[] = [];
+		for(let i = 0; i <= this.set.length-1; i++) {
+			let rec = this.set[i];
+			let res: any;
+			if(rec[field] && Array.isArray(rec[field])) {
+				// @ts-ignore
+				for (let y = 0; y <= rec[field].length-1; y++) {
+					// @ts-ignore
+					let link = rec[field][y]
+					try {
+						res = await axios.head(link);
+						resultarray.push({ link, status: res.status })
+					} catch (err) {
+						resultarray.push({ link, status: err.message })
+					}
+				}
+			}
+		}
 		return resultarray;
 	}
 }
