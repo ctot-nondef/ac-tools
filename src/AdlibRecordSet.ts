@@ -223,8 +223,7 @@ export class AdlibRecordSet implements IAdlibRecordSetInterface {
 		this.set.forEach((rec) => {
 			if (Array.isArray(rec[field])) { // @ts-ignore
 				rec[field].forEach((path) => {
-								if (fs.existsSync(`${baseDir}${path}`)) { resultarray.push({path, status: "OK"}); }
-								else { resultarray.push({ path, status: "FAIL"}); }
+								if (fs.existsSync(`${baseDir}${path}`)) { resultarray.push({path, status: "OK"}); } else { resultarray.push({ path, status: "FAIL"}); }
 							});
 			}
 		});

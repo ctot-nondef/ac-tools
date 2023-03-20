@@ -16,6 +16,7 @@ jobs:
       - name: "Upload coverage to Codecov"
         uses: codecov/codecov-action@v3
         with:
+          token: ${{secrets.CODECOV_TOKEN}}
           file: ./coverage/lcov.info
           fail_ci_if_error: true
           verbose: true
@@ -25,10 +26,9 @@ jobs:
         with:
           token: ${{ secrets.NPM_TOKEN }}
           access: "public"
-      - name: Create the docs directory locally in CI
+      - name: "Create the docs directory locally in CI"
         run: npx typedoc src/index.ts
-
-      - name: Deploy 🚀
+      - name: "Deploy 🚀"
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages
