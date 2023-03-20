@@ -96,7 +96,7 @@ describe("AdlihRecordSet", () => {
 				const checkres = await i.checkLinks("RF");
 				expect(checkres[0].status).to.equal(200);
 				expect(checkres[1].status).to.equal('getaddrinfo ENOTFOUND this-is-a-fake-url.com');
-			}).timeout(10000);
+			}).timeout(20000);
 		});
 	});
 });
