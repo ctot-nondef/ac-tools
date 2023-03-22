@@ -20,6 +20,15 @@ describe("AdlihRecordSet", () => {
 			});
 		});
 	});
+	describe("setting a source URL", () => {
+		context("when avalid URL is provided", () => {
+			it("the url should be set on the instance", () => {
+				const i = new AdlibRecordSet("testset");
+				i.setSrcUrl("https://opacbasis.acdh.oeaw.ac.at/wwwopac.ashx")
+				expect(i.srcUrl).to.equal("https://opacbasis.acdh.oeaw.ac.at/wwwopac.ashx");
+			});
+		});
+	});
 	describe("loading and writing a set", () => {
 		context("when a proper path to a tagged adlib file is passed", () => {
 			it("should parse the file into a json array", () => {
