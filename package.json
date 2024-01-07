@@ -1,7 +1,7 @@
 {
   "name": "@nondef/ac-tools",
   "description": "some tools to manage and edit axiell collectionsdata",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "lib/src/index.js",
   "scripts": {
     "build": "tsc",
@@ -24,7 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "commander": "9.4.1",
-    "axios": "^1.2.0",
+    "axios": "^1.6.5",
     "csv-parse": "^5.3.5"
   },
   "devDependencies": {
@@ -33,7 +33,7 @@
     "@types/mocha": "2.2.48",
     "@types/node": "18.11.10",
     "chai": "^4.1.2",
-    "mocha": "5.0.1",
+    "mocha": "^10.2.0",
     "coverage-badge-creator": "^1.0.14",
     "nyc": "^15.1.0",
     "ts-node": "4.1.0",
